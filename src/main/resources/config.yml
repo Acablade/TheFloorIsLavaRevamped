@@ -1,0 +1,11 @@
+locations:
+  min:
+    x: -50
+    y: 0
+    z: -50
+    world: world
+  max:
+    x: 50
+    y: 256
+    z: 50
+    world: world

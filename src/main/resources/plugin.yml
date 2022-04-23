@@ -1,0 +1,6 @@
+name: LavYukseliyor
+version: '${project.version}'
+main: me.acablade.lavyukseliyor.LavYukseliyorPlugin
+api-version: 1.18
+author: Acablade
+description: Lav yukseliyor plugin
