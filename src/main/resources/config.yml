@@ -1,3 +1,4 @@
+# dont need to do anything to this.
 locations:
   min:
     x: -50
@@ -9,3 +10,25 @@ locations:
     y: 256
     z: 50
     world: world
+
+scoreboard:
+  lobby:
+    title: "&cLav Yükseliyor"
+    lines:
+      - ""
+      - "You:"
+      - "» %player%"
+      - "Time Left:"
+      - "» %time_left%"
+      - ""
+  game:
+    title: "&cLav Yükseliyor"
+    lines:
+      - ""
+      - "You:"
+      - "» %player%"
+      - "Time Left:"
+      - "» %time_left%"
+      - "Kills:"
+      - "» %player_kills%"
+      - ""

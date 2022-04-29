@@ -1,6 +1,6 @@
 name: LavYukseliyor
-version: '${project.version}'
+version: '0.1-BETA'
 main: me.acablade.lavyukseliyor.LavYukseliyorPlugin
-api-version: 1.18
+api-version: 1.17
 author: Acablade
 description: Lav yukseliyor plugin

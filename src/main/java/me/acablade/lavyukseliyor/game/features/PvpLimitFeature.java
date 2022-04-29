@@ -26,7 +26,7 @@ public class PvpLimitFeature extends AbstractFeature {
         event.setCancelled(!pvp && event.getEntity() instanceof Player);
     }
 
-    public boolean isPvp() {
+    public boolean isPvpEnabled() {
         return pvp;
     }
 

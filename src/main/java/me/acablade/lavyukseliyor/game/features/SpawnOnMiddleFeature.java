@@ -5,6 +5,8 @@ import me.acablade.bladeapi.features.AbstractFeature;
 import me.acablade.bladeapi.features.impl.MapFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Objects;
 
@@ -28,5 +30,11 @@ public class SpawnOnMiddleFeature extends AbstractFeature {
                 .filter(Objects::nonNull)
                 .forEach(player -> player.teleport(spawnPoint));
 
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event){
+        Location spawnPoint = getAbstractPhase().getFeature(MapFeature.class).getSpawnPoints().get(0);
+        event.getPlayer().teleport(spawnPoint);
     }
 }

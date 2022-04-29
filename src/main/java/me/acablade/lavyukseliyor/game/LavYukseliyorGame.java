@@ -10,7 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class LavYukseliyorGame extends AbstractGame {
 
-    private int currentLavaLevel = 0;
+    private int currentLavaLevel = -64;
+
+    private int resetCount = 0;
 
     private Location min;
     private Location max;
@@ -54,5 +56,13 @@ public class LavYukseliyorGame extends AbstractGame {
 
     public void setCurrentLavaLevel(int currentLavaLevel) {
         this.currentLavaLevel = currentLavaLevel;
+    }
+
+    public int getResetCount() {
+        return resetCount;
+    }
+
+    public void setResetCount(int resetCount) {
+        this.resetCount = resetCount;
     }
 }
