@@ -106,7 +106,7 @@
         <dependency>
             <groupId>asfawf</groupId>
             <artifactId>asfawf</artifactId>
-            <version>1</version>
+            <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/minigameapi-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
