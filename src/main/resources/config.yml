@@ -12,6 +12,10 @@ locations:
     z: 50
     world: world
 
+messages:
+  prefix: "&7[&eTFIL&7] &8» "
+  lava-started-rising: "&cLava has started rising!"
+
 scoreboard:
   lobby:
     title: "&cLav Yükseliyor"

@@ -4,6 +4,7 @@ import me.acablade.bladeapi.AbstractPhase;
 import me.acablade.bladeapi.events.PlayerJoinGameEvent;
 import me.acablade.bladeapi.features.AbstractFeature;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,6 +28,9 @@ public class AddPlayerOnJoinFeature extends AbstractFeature {
 
         getAbstractPhase().getGame().getGameData().getPlayerList().add(uuid);
         Bukkit.getPluginManager().callEvent(new PlayerJoinGameEvent(player, getAbstractPhase().getGame()));
+
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        player.setFoodLevel(20);
 
 
     }

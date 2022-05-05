@@ -7,6 +7,7 @@ import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
 import me.acablade.lavyukseliyor.game.features.*;
 import me.acablade.lavyukseliyor.game.objects.LavTeamSupplier;
 import me.acablade.lavyukseliyor.game.objects.LavaPlaceRunnable;
+import me.acablade.lavyukseliyor.utils.Message;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ScopedComponent;
 import net.kyori.adventure.text.TextComponent;
@@ -14,8 +15,12 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Acablade/oz
@@ -55,6 +60,10 @@ public class GamePhase extends AbstractPhase {
             LavaPlaceRunnable.setTaskId(Bukkit.getScheduler()
                     .runTaskTimer(getGame().getPlugin(), new LavaPlaceRunnable((LavYukseliyorGame) getGame(),1),0,20L*getGame().getPlugin().getConfig().getInt("lava-place-timer"))
                     .getTaskId());
+
+            ((LavYukseliyorGame) getGame()).getAllPlayers().stream()
+                    .map(Bukkit::getPlayer)
+                    .forEach(player -> Message.LAVA_STARTED_RISING.send(player,null));
             stateChange=-1;
         }else if(stateChange==2){
             Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.getTaskId());

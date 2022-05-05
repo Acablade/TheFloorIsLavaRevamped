@@ -3,6 +3,7 @@ package me.acablade.lavyukseliyor.game.phases;
 import me.acablade.bladeapi.AbstractGame;
 import me.acablade.bladeapi.AbstractPhase;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
+import me.acablade.lavyukseliyor.game.features.ScoreboardFeature;
 import me.acablade.lavyukseliyor.utils.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,6 +27,7 @@ public class ResetPhase extends AbstractPhase {
 
     public ResetPhase(AbstractGame game) {
         super(game);
+        addFeature(new ScoreboardFeature(this));
     }
 
     @Override
@@ -38,6 +40,10 @@ public class ResetPhase extends AbstractPhase {
         super.onEnable();
 
         LavYukseliyorGame game = (LavYukseliyorGame) getGame();
+
+        game.getAllPlayers().stream()
+                .map(Bukkit::getPlayer)
+                .forEach(player -> Bukkit.getScheduler().runTask(getGame().getPlugin(),() -> player.kickPlayer("Resetleniyor")));
 
         FileConfiguration config = getGame().getPlugin().getConfig();
 
@@ -78,11 +84,13 @@ public class ResetPhase extends AbstractPhase {
         duration = Duration.ofMillis(10);
         game.setResetCount(game.getResetCount()+1);
 
+
+
     }
 
     @EventHandler
     public void onJoin(PlayerLoginEvent event){
-        event.disallow(PlayerLoginEvent.Result.KICK_OTHER,"oyun yenileniyor");
+        event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "oyun yenileniyor");
     }
 
     private void resetWorld(){

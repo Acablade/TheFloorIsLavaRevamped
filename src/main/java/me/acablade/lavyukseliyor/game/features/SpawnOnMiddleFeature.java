@@ -1,6 +1,7 @@
 package me.acablade.lavyukseliyor.game.features;
 
 import me.acablade.bladeapi.AbstractPhase;
+import me.acablade.bladeapi.events.PlayerJoinGameEvent;
 import me.acablade.bladeapi.features.AbstractFeature;
 import me.acablade.bladeapi.features.impl.MapFeature;
 import org.bukkit.Bukkit;
@@ -28,12 +29,14 @@ public class SpawnOnMiddleFeature extends AbstractFeature {
         getAbstractPhase().getGame().getGameData().getPlayerList().stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
-                .forEach(player -> player.teleport(spawnPoint));
+                .forEach(player ->{
+                    player.teleport(spawnPoint);
+                });
 
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event){
+    public void onJoin(PlayerJoinGameEvent event){
         Location spawnPoint = getAbstractPhase().getFeature(MapFeature.class).getSpawnPoints().get(0);
         event.getPlayer().teleport(spawnPoint);
     }

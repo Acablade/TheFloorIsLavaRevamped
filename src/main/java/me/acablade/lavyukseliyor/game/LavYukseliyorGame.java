@@ -5,6 +5,10 @@ import me.acablade.lavyukseliyor.utils.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Acablade/oz
  */
@@ -65,4 +69,12 @@ public class LavYukseliyorGame extends AbstractGame {
     public void setResetCount(int resetCount) {
         this.resetCount = resetCount;
     }
+
+    public Set<UUID> getAllPlayers(){
+        Set<UUID> allPlayerUUIDs = new HashSet<>(getGameData().getPlayerList());
+        allPlayerUUIDs.addAll(getGameData().getSpectatorList());
+        return  allPlayerUUIDs;
+    }
+
+
 }
