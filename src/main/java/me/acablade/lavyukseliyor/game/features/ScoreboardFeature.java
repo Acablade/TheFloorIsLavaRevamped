@@ -25,8 +25,27 @@ public class ScoreboardFeature extends AbstractFeature {
 
     private static final Map<UUID, FastBoard> boards = new HashMap<>();
 
+    private List<String> gameLines;
+    private List<String> lobbyLines;
+    private String gameTitle;
+    private String lobbyTitle;
+
     public ScoreboardFeature(AbstractPhase abstractPhase) {
         super(abstractPhase);
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+        ConfigurationSection scoreboardSection = getAbstractPhase().getGame().getPlugin().getConfig().getConfigurationSection("scoreboard");
+        ConfigurationSection phaseSection = scoreboardSection.getConfigurationSection("game");
+        this.gameLines = phaseSection.getStringList("lines");
+        this.gameTitle = phaseSection.getString("title");
+
+        phaseSection = scoreboardSection.getConfigurationSection("lobby");
+        this.lobbyLines = phaseSection.getStringList("lines");
+        this.lobbyTitle = phaseSection.getString("title");
+
     }
 
     @Override
@@ -84,16 +103,12 @@ public class ScoreboardFeature extends AbstractFeature {
     }
 
     private List<String> processLines(String section, Player player){
-        ConfigurationSection scoreboardSection = getAbstractPhase().getGame().getPlugin().getConfig().getConfigurationSection("scoreboard");
-        ConfigurationSection phaseSection = scoreboardSection.getConfigurationSection(section);
-        List<String> lines = phaseSection.getStringList("lines").stream().map(line -> processLine(line,player)).toList();
+        List<String> lines = (section.equals("game") ? gameLines : lobbyLines).stream().map(line -> processLine(line,player)).toList();
         return lines;
     }
 
     private String processTitle(String section, Player player){
-        ConfigurationSection scoreboardSection = getAbstractPhase().getGame().getPlugin().getConfig().getConfigurationSection("scoreboard");
-        ConfigurationSection phaseSection = scoreboardSection.getConfigurationSection(section);
-        return processLine(phaseSection.getString("title"),player);
+        return processLine(section.equals("game") ? gameTitle : lobbyTitle, player);
     }
 
     private String processLine(String line, Player player){
@@ -103,5 +118,19 @@ public class ScoreboardFeature extends AbstractFeature {
                         .replace("%player_kills%",player.getStatistic(Statistic.PLAYER_KILLS)+""));
     }
 
+    public void setGameLines(List<String> gameLines) {
+        this.gameLines = gameLines;
+    }
 
+    public void setLobbyLines(List<String> lobbyLines) {
+        this.lobbyLines = lobbyLines;
+    }
+
+    public void setGameTitle(String gameTitle) {
+        this.gameTitle = gameTitle;
+    }
+
+    public void setLobbyTitle(String lobbyTitle) {
+        this.lobbyTitle = lobbyTitle;
+    }
 }

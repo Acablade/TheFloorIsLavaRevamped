@@ -1,10 +1,10 @@
 package me.acablade.lavyukseliyor;
 
-import fr.mrmicky.fastboard.FastBoard;
 import me.acablade.lavyukseliyor.commands.LavCommands;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
 import me.acablade.lavyukseliyor.game.objects.LavaPlaceRunnable;
 import me.acablade.lavyukseliyor.game.phases.EndPhase;
+import me.acablade.lavyukseliyor.game.phases.ResetPhase;
 import me.acablade.lavyukseliyor.game.phases.GamePhase;
 import me.acablade.lavyukseliyor.game.phases.LobbyPhase;
 import me.acablade.lavyukseliyor.utils.WorkloadThread;
@@ -33,7 +33,7 @@ public final class LavYukseliyorPlugin extends JavaPlugin {
         game.addPhase(LobbyPhase.class);
         game.addPhase(GamePhase.class);
         game.addPhase(EndPhase.class);
-
+        game.addPhase(ResetPhase.class);
 
         BukkitCommandHandler commandHandler = BukkitCommandHandler.create(this);
 
@@ -56,7 +56,7 @@ public final class LavYukseliyorPlugin extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
 
-        Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.taskId);
+        Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.getTaskId());
 
     }
 

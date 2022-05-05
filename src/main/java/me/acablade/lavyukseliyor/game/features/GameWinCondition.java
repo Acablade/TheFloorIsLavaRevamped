@@ -4,10 +4,13 @@ import me.acablade.bladeapi.AbstractPhase;
 import me.acablade.bladeapi.events.GameFinishEvent;
 import me.acablade.bladeapi.features.AbstractFeature;
 import me.acablade.bladeapi.features.impl.TeamFeature;
+import me.acablade.bladeapi.objects.GameData;
 import me.acablade.bladeapi.objects.Team;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.*;
@@ -22,7 +25,7 @@ public class GameWinCondition extends AbstractFeature {
         super(abstractPhase);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDeath(PlayerDeathEvent event){
 
         if(getAbstractPhase().getGame().getGameData().getPlayerList().size()>3) return;
@@ -32,9 +35,7 @@ public class GameWinCondition extends AbstractFeature {
         getAbstractPhase().getGame().getGameData().getPlayerList().stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
-                .forEach(player ->{
-                    teamSet.add(getTeam(player));
-                });
+                .forEach(player -> teamSet.add(getTeam(player)));
 
         if(teamSet.size()==1){
             List<UUID> uuids = Arrays.asList(teamSet.toArray(new Team[0])[0].getPlayerList().toArray(new UUID[0]));
@@ -42,6 +43,15 @@ public class GameWinCondition extends AbstractFeature {
             Bukkit.getPluginManager().callEvent(new GameFinishEvent(getAbstractPhase().getGame()));
             getAbstractPhase().getGame().endPhase();
         }
+        Player player = event.getEntity();
+        UUID uuid = player.getUniqueId();
+
+        GameData gameData = getAbstractPhase().getGame().getGameData();
+
+        gameData.getSpectatorList().add(uuid);
+        gameData.getPlayerList().remove(uuid);
+
+        player.setGameMode(GameMode.SPECTATOR);
 
     }
 

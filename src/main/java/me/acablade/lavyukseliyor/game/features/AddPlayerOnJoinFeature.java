@@ -25,12 +25,9 @@ public class AddPlayerOnJoinFeature extends AbstractFeature {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if(getAbstractPhase().getGame().getGameData().getPlayerList().contains(uuid)){
-            Bukkit.getPluginManager().callEvent(new PlayerJoinGameEvent(player, getAbstractPhase().getGame()));
-            return;
-        }
-
         getAbstractPhase().getGame().getGameData().getPlayerList().add(uuid);
+        Bukkit.getPluginManager().callEvent(new PlayerJoinGameEvent(player, getAbstractPhase().getGame()));
+
 
     }
 

@@ -2,28 +2,27 @@ package me.acablade.lavyukseliyor.game.phases;
 
 import me.acablade.bladeapi.AbstractGame;
 import me.acablade.bladeapi.AbstractPhase;
+import me.acablade.bladeapi.features.impl.TeamFeature;
+import me.acablade.bladeapi.objects.Team;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
-import me.acablade.lavyukseliyor.utils.LocationUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ScopedComponent;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
+import org.bukkit.*;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.time.Duration;
+import java.util.stream.Collectors;
 
 /**
  * @author Acablade/oz
  */
 public class EndPhase extends AbstractPhase {
 
-    private Duration duration = Duration.ofSeconds(10);
 
     public EndPhase(AbstractGame game) {
         super(game);
@@ -31,7 +30,7 @@ public class EndPhase extends AbstractPhase {
 
     @Override
     public Duration duration() {
-        return duration;
+        return Duration.ofSeconds(10);
     }
 
     @Override
@@ -40,63 +39,10 @@ public class EndPhase extends AbstractPhase {
 
         LavYukseliyorGame game = (LavYukseliyorGame) getGame();
 
-        if(game.getResetCount()>0&&game.getResetCount()%5==0){
-            resetWorld();
-            game.getMax().set(-50,256,-50);
-            game.getMin().set(-150,-64,-150);
-        }
+        String winner = game.getGameData().getWinner().stream().map(uuid -> Bukkit.getPlayer(uuid).getName()).collect(Collectors.joining(","));
 
-        FileConfiguration config = getGame().getPlugin().getConfig();
-
-        ConfigurationSection locationSection = config.getConfigurationSection("locations");
-
-
-        LocationUtil.setLocation(game.getMin().add(100,0,100),locationSection.getConfigurationSection("min"));
-        LocationUtil.setLocation(game.getMax().add(100,0,100),locationSection.getConfigurationSection("max"));
-
-        Location center = game.getCenter();
-
-        center.getWorld().getWorldBorder().setCenter(center);
-
-        game.setCurrentLavaLevel(-64);
-
-        game.addPhase(LobbyPhase.class);
-        game.addPhase(GamePhase.class);
-        game.addPhase(EndPhase.class);
-
-        game.getPlugin().saveConfig();
-
-        duration = Duration.ofMillis(10);
-        game.setResetCount(game.getResetCount()+1);
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("§6KAZANAN", winner,5,10,5));
 
     }
 
-    @EventHandler
-    public void onJoin(PlayerLoginEvent event){
-        event.disallow(PlayerLoginEvent.Result.KICK_OTHER,"oyun yenileniyor");
-    }
-
-    private void resetWorld(){
-        LavYukseliyorGame game = (LavYukseliyorGame) getGame();
-        World oldWorld = game.getCenter().getWorld();
-        World world = Bukkit.createWorld(new WorldCreator("lavyukseliyor_"+System.currentTimeMillis()));
-        Bukkit.unloadWorld(oldWorld,false);
-
-        deleteDir(oldWorld.getWorldFolder());
-        game.getMax().setWorld(world);
-        game.getMin().setWorld(world);
-
-    }
-
-    void deleteDir(File file) {
-        File[] contents = file.listFiles();
-        if (contents != null) {
-            for (File f : contents) {
-                if (! Files.isSymbolicLink(f.toPath())) {
-                    deleteDir(f);
-                }
-            }
-        }
-        file.delete();
-    }
 }

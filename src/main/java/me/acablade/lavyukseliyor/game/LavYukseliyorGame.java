@@ -27,7 +27,7 @@ public class LavYukseliyorGame extends AbstractGame {
         this.max = LocationUtil.getLocation(getPlugin().getConfig().getConfigurationSection("locations").getConfigurationSection("max"));
         Location center = getCenter();
         center.getWorld().getWorldBorder().setCenter(center);
-        center.getWorld().getWorldBorder().setSize(100);
+        center.getWorld().getWorldBorder().setSize(max.getBlockX()-min.getBlockX());
         center.getWorld().setSpawnLocation(center.getWorld().getHighestBlockAt(center.getBlockX(), center.getBlockZ()).getLocation().add(0,1,0));
         getPlugin().getLogger().info(getName() + " oyun aktif!");
     }

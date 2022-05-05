@@ -2,9 +2,10 @@ package me.acablade.lavyukseliyor.game.phases;
 
 import me.acablade.bladeapi.AbstractGame;
 import me.acablade.bladeapi.AbstractPhase;
-import me.acablade.bladeapi.features.impl.AntiBlockBreakFeature;
-import me.acablade.bladeapi.features.impl.AntiBlockPlaceFeature;
+import me.acablade.bladeapi.events.PlayerJoinGameEvent;
 import me.acablade.bladeapi.features.impl.MapFeature;
+import me.acablade.bladeapi.features.impl.NoBlockBreakFeature;
+import me.acablade.bladeapi.features.impl.NoBlockPlaceFeature;
 import me.acablade.bladeapi.features.impl.NoHitFeature;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
 import me.acablade.lavyukseliyor.game.features.AddPlayerOnJoinFeature;
@@ -13,7 +14,12 @@ import me.acablade.lavyukseliyor.game.features.ScoreboardFeature;
 import me.acablade.lavyukseliyor.game.features.SpawnOnMiddleFeature;
 import me.acablade.lavyukseliyor.game.objects.LavaPlaceRunnable;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.time.Duration;
 
@@ -22,11 +28,14 @@ import java.time.Duration;
  */
 
 
-public class LobbyPhase extends AbstractPhase {
+public class LobbyPhase extends AbstractPhase implements Listener {
+
+    private Duration duration = Duration.ofMinutes(5);
+
     public LobbyPhase(AbstractGame game) {
         super(game);
-        addFeature(new AntiBlockBreakFeature(this));
-        addFeature(new AntiBlockPlaceFeature(this));
+        addFeature(new NoBlockBreakFeature(this));
+        addFeature(new NoBlockPlaceFeature(this));
         addFeature(new AddPlayerOnJoinFeature(this));
         addFeature(new RemovePlayerOnLeaveFeature(this));
         addFeature(new MapFeature(this));
@@ -34,7 +43,9 @@ public class LobbyPhase extends AbstractPhase {
         addFeature(new ScoreboardFeature(this));
         addFeature(new NoHitFeature(this));
 
-        Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.taskId);
+        Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.getTaskId());
+
+        Bukkit.getPluginManager().registerEvents(this, game.getPlugin());
 
         Location center = ((LavYukseliyorGame)game).getCenter();
 
@@ -42,8 +53,22 @@ public class LobbyPhase extends AbstractPhase {
     }
 
     @Override
+    public void onDisable() {
+        super.onDisable();
+        HandlerList.unregisterAll(this);
+    }
+
+    @Override
     public Duration duration() {
-        return Duration.ofMinutes(5);
+        return duration;
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinGameEvent event){
+        if(Math.floor(Bukkit.getServer().getMaxPlayers()*0.8)<=getGame().getGameData().getPlayerList().size()){
+            duration = Duration.ofSeconds(15);
+        }
+
     }
 
 }

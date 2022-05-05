@@ -1,5 +1,6 @@
 # dont need to do anything to this.
 locations:
+  size: 100
   min:
     x: -50
     y: 0
@@ -32,3 +33,6 @@ scoreboard:
       - "Kills:"
       - "» %player_kills%"
       - ""
+
+lava-place-timer: 3
+lava-fast-paced-block-amount: 3

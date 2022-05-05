@@ -26,17 +26,9 @@ public class GamePhase extends AbstractPhase {
     public GamePhase(AbstractGame game) {
         super(game);
 
-        addFeature(new TeamFeature(this, new LavTeamSupplier(), false, team -> {
-            TextColor textColor = (TextColor) team.getColor();
-            TextComponent messageComponent = Component.text("§eOtomatik olarak takıma atandın: ");
-            TextComponent textComponent = Component.text(team.getName(), textColor);
-            ScopedComponent component = messageComponent.append(textComponent);
-            String json = GsonComponentSerializer.gson().serialize(component);
-
-            return ComponentSerializer.parse(json);
-        }));
+        addFeature(new TeamFeature(this, new LavTeamSupplier(), false));
         addFeature(new MapFeature(this));
-        addFeature(new SpectatorOnDeathFeature(this));
+        //addFeature(new SpectatorOnDeathFeature(this));
         addFeature(new SpectatorOnJoinFeature(this));
         addFeature(new SpawnOnMiddleFeature(this));
         addFeature(new StartingItemsFeature(this));
@@ -46,11 +38,6 @@ public class GamePhase extends AbstractPhase {
         addFeature(new ScoreboardFeature(this));
 
         getFeature(MapFeature.class).getSpawnPoints().add(((LavYukseliyorGame)game).getCenter().getWorld().getSpawnLocation());
-    }
-
-    @Override
-    public void onEnable() {
-        super.onEnable();
     }
 
     private int stateChange = 0;
@@ -65,15 +52,16 @@ public class GamePhase extends AbstractPhase {
         if(!getFeature(PvpLimitFeature.class).isPvpEnabled()&&((LavYukseliyorGame)getGame()).getCurrentLavaLevel()>=80) getFeature(PvpLimitFeature.class).setPvp(true);
 
         if(stateChange==1){
-            LavaPlaceRunnable.taskId = Bukkit.getScheduler()
-                    .runTaskTimer(getGame().getPlugin(), new LavaPlaceRunnable((LavYukseliyorGame) getGame(),1),0,20*3L)
-                    .getTaskId();
+            LavaPlaceRunnable.setTaskId(Bukkit.getScheduler()
+                    .runTaskTimer(getGame().getPlugin(), new LavaPlaceRunnable((LavYukseliyorGame) getGame(),1),0,20L*getGame().getPlugin().getConfig().getInt("lava-place-timer"))
+                    .getTaskId());
             stateChange=-1;
         }else if(stateChange==2){
-            Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.taskId);
-            LavaPlaceRunnable.taskId = Bukkit.getScheduler()
-                    .runTaskTimer(getGame().getPlugin(),new LavaPlaceRunnable((LavYukseliyorGame) getGame(),3),0,20*3L)
-                    .getTaskId();
+            Bukkit.getScheduler().cancelTask(LavaPlaceRunnable.getTaskId());
+            LavaPlaceRunnable.setTaskId(Bukkit.getScheduler()
+                    .runTaskTimer(getGame().getPlugin(),new LavaPlaceRunnable((LavYukseliyorGame) getGame(),
+                            getGame().getPlugin().getConfig().getInt("lava-fast-paced-block-amount")),0,20L*getGame().getPlugin().getConfig().getInt("lava-place-timer"))
+                    .getTaskId());
             stateChange=-2;
         }
 

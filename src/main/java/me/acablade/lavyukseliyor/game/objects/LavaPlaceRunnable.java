@@ -15,11 +15,19 @@ import java.util.Objects;
  */
 public class LavaPlaceRunnable implements Runnable{
 
+    private static int taskId = -1;
+
+    public static int getTaskId() {
+        return taskId;
+    }
+
+    public static void setTaskId(int taskId) {
+        LavaPlaceRunnable.taskId = taskId;
+    }
+
     private final LavYukseliyorPlugin plugin;
     private final LavYukseliyorGame game;
     private final int yMultiplier;
-
-    public static int taskId = -1;
 
     public LavaPlaceRunnable(LavYukseliyorGame game, int yMultiplier){
         this.plugin = (LavYukseliyorPlugin) game.getPlugin();

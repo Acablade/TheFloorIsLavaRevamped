@@ -2,10 +2,8 @@ package me.acablade.lavyukseliyor.game.features;
 
 import me.acablade.bladeapi.AbstractPhase;
 import me.acablade.bladeapi.features.AbstractFeature;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**

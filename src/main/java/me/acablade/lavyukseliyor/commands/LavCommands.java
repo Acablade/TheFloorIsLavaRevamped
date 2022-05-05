@@ -2,13 +2,19 @@ package me.acablade.lavyukseliyor.commands;
 
 import me.acablade.lavyukseliyor.LavYukseliyorPlugin;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
+import me.acablade.lavyukseliyor.game.features.ScoreboardFeature;
 import me.acablade.lavyukseliyor.game.phases.GamePhase;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 import revxrsal.commands.help.CommandHelp;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * @author Acablade/oz
@@ -35,6 +41,7 @@ public class LavCommands {
             actor.reply(gamePhase.getStateChange()+"");
             return;
         }
+        plugin.getGame().getGameData().setWinner(new HashSet<>(Arrays.asList(Bukkit.getOnlinePlayers().toArray(new Player[0])[0].getUniqueId())));
         plugin.getGame().endPhase();
     }
 
@@ -55,6 +62,21 @@ public class LavCommands {
         plugin.getGame().setCurrentLavaLevel(level);
         actor.reply("&aLevel set");
     }
+
+    @Usage("/lav reload")
+    @Subcommand("reload")
+    @CommandPermission("lav.reload")
+    @Description("Reloads the plugin config")
+    public void reload(BukkitCommandActor actor){
+        ScoreboardFeature scoreboardFeature = plugin.getGame().getCurrentPhase().getFeature(ScoreboardFeature.class);
+        if(scoreboardFeature==null) return;
+        plugin.reloadConfig();
+        scoreboardFeature.onDisable();
+        scoreboardFeature.onEnable();
+        actor.reply("&eReloaded successfully");
+    }
+
+
 
     @Usage("/lav help")
     @Subcommand("help")
