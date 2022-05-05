@@ -28,7 +28,7 @@ public class GamePhase extends AbstractPhase {
 
         addFeature(new TeamFeature(this, new LavTeamSupplier(), false));
         addFeature(new MapFeature(this));
-        //addFeature(new SpectatorOnDeathFeature(this));
+        addFeature(new SpectatorOnDeathFeature(this));
         addFeature(new SpectatorOnJoinFeature(this));
         addFeature(new SpawnOnMiddleFeature(this));
         addFeature(new StartingItemsFeature(this));

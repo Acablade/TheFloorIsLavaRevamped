@@ -2,17 +2,7 @@ package me.acablade.lavyukseliyor.game.phases;
 
 import me.acablade.bladeapi.AbstractGame;
 import me.acablade.bladeapi.AbstractPhase;
-import me.acablade.bladeapi.features.impl.TeamFeature;
-import me.acablade.bladeapi.objects.Team;
 import me.acablade.lavyukseliyor.game.LavYukseliyorGame;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ScopedComponent;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.*;
 
 import java.time.Duration;
