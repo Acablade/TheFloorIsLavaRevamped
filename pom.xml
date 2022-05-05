@@ -110,7 +110,7 @@
         <dependency>
             <groupId>com.github.Acablade</groupId>
             <artifactId>BladeAPI</artifactId>
-            <version>0.1-BETA</version>
+            <version>0.1.1-BETA</version>
         </dependency>
 
         <dependency>

@@ -38,7 +38,6 @@ public class LavCommands {
                 return;
             }
             gamePhase.setStateChange(Math.abs(gamePhase.getStateChange()-1));
-            actor.reply(gamePhase.getStateChange()+"");
             return;
         }
         plugin.getGame().getGameData().setWinner(new HashSet<>(Arrays.asList(Bukkit.getOnlinePlayers().toArray(new Player[0])[0].getUniqueId())));
