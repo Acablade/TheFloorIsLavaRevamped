@@ -1,6 +1,7 @@
 package me.acablade.lavyukseliyor.commands;
 
 import me.acablade.bladecommandframework.annotations.CommandInfo;
+import me.acablade.bladecommandframework.annotations.FallbackCommand;
 import me.acablade.bladecommandframework.classes.CommandActor;
 import me.acablade.lavyukseliyor.LavYukseliyorPlugin;
 import me.acablade.lavyukseliyor.game.features.ScoreboardFeature;
@@ -22,6 +23,12 @@ public class LavCommands {
 
     public LavCommands(LavYukseliyorPlugin plugin){
         this.plugin = plugin;
+    }
+
+    @FallbackCommand
+    @CommandInfo(commandName = "help")
+    public void help(CommandActor actor){
+        actor.reply("&ehelped \uD83D\uDE0E");
     }
 
     @CommandInfo(commandName = "skip")

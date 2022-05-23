@@ -4,3 +4,5 @@ main: me.acablade.lavyukseliyor.LavYukseliyorPlugin
 api-version: 1.17
 author: Acablade
 description: Lav yukseliyor plugin
+commands:
+  lav:
