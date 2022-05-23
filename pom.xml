@@ -118,18 +118,10 @@
             <version>1.2.1</version>
         </dependency>
 
-        <!-- For the common module -->
         <dependency>
-            <groupId>com.github.Revxrsal.Lamp</groupId>
-            <artifactId>common</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-
-        <!-- For the bukkit module -->
-        <dependency>
-            <groupId>com.github.Revxrsal.Lamp</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>3.0.2</version>
+            <groupId>com.github.Acablade</groupId>
+            <artifactId>bladecf</artifactId>
+            <version>master-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
